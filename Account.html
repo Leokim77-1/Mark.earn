@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Updated Layout</title>
+    <style>
+        /* General Styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Section with Circle and Text */
+        .top-section {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            position: fixed;
+            width: 100%;
+            background-color: #f8f8f8; /* Optional: Background for better visibility */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Shadow for better separation */
+        }
+
+        .circle {
+            background-color: #d3d3d3; /* Light gray background */
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .text {
+            margin-left: 15px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Bottom Taskbar */
+        .taskbar {
+            position: fixed;
+            bottom: 0; /* Attach the taskbar to the bottom */
+            display: flex;
+            justify-content: space-around;
+            background-color: #333;
+            padding: 10px 30px;
+            width: 100%;
+            box-sizing: border-box; /* Ensure padding doesn't affect the width */
+        }
+
+        .taskbar button {
+            background-color: #555;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            flex: 1;
+            margin: 0 5px;
+        }
+
+        /* Dark Blue Background for the Third Button (Account) */
+        .taskbar button:nth-child(3) {
+            background-color: #003366;
+        }
+
+        .taskbar button:hover {
+            background-color: #777;
+        }
+
+        /* Ensure content scrolls without overlapping the fixed elements */
+        .content {
+            margin-top: 120px; /* Space for the fixed top section */
+            padding: 20px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        /* Daily Sections */
+        .daily-section {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            background-color: #d3d3d3; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 40px;
+            cursor: pointer; /* Make it look clickable */
+        }
+
+        .daily-section img {
+            width: 100%;
+            height: auto;
+            max-width: 600px; /* Ensure images are not too large */
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .daily-section p {
+            font-size: 18px;
+        }
+
+        .daily-section img {
+            width: 30px;
+            height: 30px;
+            margin-top: 10px;
+        }
+
+        .logdis {
+            position: fixed;
+            background-color: #555;
+            width: 330px;
+            height: 200px;
+            margin-left: -20000px;
+            margin-top: 150px;
+            border-radius: 15px;
+            border: none;
+            opacity: 0.8;
+        }
+
+        .passkey {
+            margin-left: 15px;
+            margin-top: 30px;
+            width: 300px;
+            height: 30px;
+            border-radius: 10px;
+            border: none;
+            filter: blur(0px);
+        }
+
+        .passkey::placeholder {
+            color: light;
+            font-weight: bolder;
+            font-family: Tahoma;
+        }
+
+        .log {
+            margin-left: 120px;
+            margin-top: 20px;
+            color: white;
+            font-weight: bold;
+            font-family: Tahoma;
+            background-color: rgb(255, 29, 29);
+            width: 46px;
+            height: 20px;
+            padding: 5px 20px;
+            border-radius: 10px;
+        }
+
+        /* Black Div for Displaying Referral Code and Registration Date */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: black;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            z-index: 1000; /* Ensure it appears above other content */
+            width: 300px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .close-modal {
+            cursor: pointer;
+            margin-top: 15px;
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: red;
+            border-radius: 5px;
+        }
+
+        /* Loading Bar Styles */
+        .loading-bar {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px; /* Adjust height as needed */
+            background-color: #3498db; /* Color of the loading bar */
+            animation: loadingAnimation 2s infinite;
+            z-index: 1001; /* Ensure it's above other content */
+        }
+
+        /* Animation for loading bar */
+        @keyframes loadingAnimation {
+            0% { width: 0; }
+            50% { width: 100%; }
+            100% { width: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Section with Circle and Text -->
+    <div class="top-section">
+        <div class="circle">
+            <img src="user.png" alt="Profile Picture">
+        </div>
+        <div class="text">Mannuel</div>
+    </div>
+
+    <!-- Content Section -->
+    <div class="content">
+        <!-- Daily Section 1: Earnings -->
+        <div class="daily-section" id="transaction-section">
+            <p>Transaction</p>
+            <img src="earnings.png" alt="Earnings" class="ic">
+        </div>
+
+        <!-- Daily Section 2: Referral Code -->
+        <div class="daily-section" id="referral-section">
+            <p class="refcode">Referral Code</p>
+            <img src="link.png" alt="Referral Code">
+        </div>
+
+        <!-- Daily Section 3: Account Details -->
+        <div class="daily-section" id="registration-section">
+            <p class="date">Date of Registration</p>
+        </div>
+
+        <!-- Daily Section 4: Log Out -->
+        <div class="daily-section" id="login-logout-button">
+            <p class="logch">Sign in</p>
+        </div>
+         
+        <div class="create">Have no Account? <a href="createacc.html">Create one</a> </div>
+    </div>
+
+    <!-- Bottom Taskbar -->
+    <div class="taskbar">
+        <button onclick="window.location.href='markearn.html'">Home</button>
+        <button onclick="window.location.href='recents.html'">Recents</button>
+        <button onclick="window.location.href='account.html'">Account</button>
+    </div>
+
+    <div class="logdis">
+        <input type="text" placeholder="Enter username..." class="passkey" id="username">
+        <input type="text" placeholder="Enter Password..." class="passkey" id="pass">
+        <div class="log">Login</div>
+    </div>
+
+    <!-- Black Div to Show Referral Code -->
+    <div class="modal" id="referral-modal">
+        <p id="referral-code-display">Your Referral Code: </p>
+        <span class="close-modal" onclick="closeReferralModal()">Close</span>
+    </div>
+
+    <!-- Black Div to Show Registration Date -->
+    <div class="modal" id="registration-modal">
+        <p id="registration-date-display">Your Registration Date: </p>
+        <span class="close-modal" onclick="closeRegistrationModal()">Close</span>
+    </div>
+
+    <!-- Loading Bar -->
+    <div class="loading-bar" id="loading-bar"></div>
+
+    <script src="userlogs.js"></script>
+    <script>
+        // Sample data for users with referral codes and registration dates
+        const users = {
+            "Joe": { referralCode: "Joseph", registrationDate: "8/29/2024 1:03:54 PM" }
+        };
+
+        // Function to display referral code modal
+        function showReferralModal(username) {
+            const referralCode = users[username]?.referralCode || "No referral code found";
+            document.getElementById('referral-code-display').innerText = "Your Referral Code: " + referralCode;
+            document.getElementById('referral-modal').style.display = 'block';
+        }
+
+        // Function to display registration date modal
+        function showRegistrationModal(username) {
+            const registrationDate = users[username]?.registrationDate || "No registration date found";
+            document.getElementById('registration-date-display').innerText = "Your Registration Date: " + registrationDate;
+            document.getElementById('registration-modal').style.display = 'block';
+        }
+
+        // Close the referral modal
+        function closeReferralModal() {
+            document.getElementById('referral-modal').style.display = 'none';
+        }
+
+        // Close the registration modal
+        function closeRegistrationModal() {
+            document.getElementById('registration-modal').style.display = 'none';
+        }
+
+        // Add event listener for the Referral Code section
+        document.getElementById('referral-section').addEventListener('click', function() {
+            const username = document.getElementById('username').value;
+            showReferralModal(username);
+        });
+
+        // Add event listener for the Registration Date section
+        document.getElementById('registration-section').addEventListener('click', function() {
+            const username = document.getElementById('username').value;
+            showRegistrationModal(username);
+        });
+
+        // Add event listener for the Transaction section
+        document.getElementById('transaction-section').addEventListener('click', function() {
+            window.location.href = 'Transaction.html';
+        });
+
+        // Add event listener for the Log Out section
+        document.getElementById('login-logout-button').addEventListener('click', function() {
+            const logOutButton = document.querySelector('.logch');
+            const isLoggedIn = logOutButton.textContent === 'Sign in';
+
+            if (isLoggedIn) {
+                logOutButton.textContent = 'Log out';
+            } else {
+                // Show loading bar
+                document.getElementById('loading-bar').style.display = 'block';
+                
+                // Simulate loading delay
+                setTimeout(function() {
+                    // Refresh the page after loading
+                    window.location.reload();
+                }, 2000); // Adjust the delay as needed (2000ms = 2 seconds)
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile App with Bottom Taskbar</title>
+    <style>
+        /* General Styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Loading Splash Screen */
+        .loading-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            background-color: #333;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            position: absolute;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .loading-text {
+            margin-bottom: 20px;
+        }
+
+        .loading-animation {
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #FF7E5F, #FEB47B);
+            animation: loadingAnimation 2s linear infinite;
+        }
+
+        @keyframes loadingAnimation {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.5);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Hide content initially */
+        .content-section {
+            display: none;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: hidden; /* Disable scroll until content is shown */
+        }
+
+        /* Header Section */
+        .header-section {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #f1f1f1;
+        }
+
+        /* Header Text Box */
+        .header {
+            background-color: #f1f1f1;
+            padding: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            border-radius: 10px;
+            margin-right: auto;
+        }
+
+        /* Rounded Divs Positioned Further Right */
+        .rounded-div {
+            background-color: #f1f1f1;
+            padding: 10px;
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            margin-left: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #333;
+            font-family: Tahoma, sans-serif;
+        }
+        
+        .rounded-div img{
+          width: 40px;
+          height: 40px;
+        }
+
+        /* Black HSL Div with Text and Arrow */
+        .bottom-divider {
+            background-color: hsl(0, 0%, 0%);
+            height: 30px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-left: 10px;
+            font-weight: bold;
+            color: white;
+        }
+
+        /* Lighter Black Section with Arrow */
+        .lighter-section {
+            background-color: hsl(0, 0%, 20%);
+            width: 50px;
+            height: 100%;
+            position: absolute;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .lighter-section::before {
+            content: '➔';
+            color: white;
+            font-size: 16px;
+        }
+
+        /* Content area */
+        .content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto; /* Enable scrolling */
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Add space between divs */
+        }
+
+        /* Container for the rows of divs */
+        .div-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            padding-bottom: 120px;
+        }
+
+        /* Individual Divs with Roughly Rounded Sides and Gradient Background */
+        .gradient-div {
+            background: linear-gradient(135deg, #FF7E5F, #FEB47B); /* Gradient color 1 */
+            height: 150px;
+            border-radius: 20px; /* Roughly rounded corners */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer; /* Add cursor pointer */
+        }
+
+        .gradient-div:nth-child(2n) {
+            background: linear-gradient(135deg, #6A82FB, #FC5C7D); /* Gradient color 2 */
+        }
+
+        /* Bottom Taskbar */
+        .taskbar {
+            display: flex;
+            justify-content: space-around;
+            background-color: #333;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .taskbar button {
+            background-color: #555;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            flex: 1;
+            margin: 0 5px;
+        }
+
+        .taskbar button:first-child {
+            background-color: darkblue;
+        }
+
+        .taskbar button:hover {
+            background-color: #777;
+        }
+
+
+        .pro{
+background-color: rgb(255, 255, 255);
+border-radius: 25px;
+width: 50px;
+height: 50px;
+margin-left: 3px;
+        }
+
+.rev{
+    background-color: #98deff;
+border-radius: 15px 15px 15px 0px;
+margin-left: 15px;
+color: black;
+padding: 10px 5px
+
+}
+
+
+    </style>
+</head>
+<body>
+
+    <!-- Loading Splash Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-text">Mark.earn</div>
+        <div class="loading-animation"></div>
+    </div>
+
+    <!-- Main Content Section -->
+    <div class="content-section" id="contentSection">
+        <!-- Header Section with Text Box and Rounded Divs -->
+        <div class="header-section">
+            <div class="header">Hi, Welcome!</div>
+            <div class="rounded-div"><img src="tnc.png" alt="TNC"></div>
+            <div class="rounded-div"><img src="link.png" alt="Link"></div>
+        </div>
+
+        <!-- Black HSL Div with Lighter Section, Arrow, and Text -->
+        <div class="bottom-divider">
+            Check out more deals here!
+            <div class="lighter-section"></div>
+        </div>
+
+        <!-- Content Area with Scrollable Gradient Divs -->
+        <div class="content">
+            <div class="div-container">
+                <div class="gradient-div" > <img class="pro" src="1.jpeg"> <div class="rev">cashed out on my first time.</div></div>
+                <div class="gradient-div" >  <img class="pro" src="2.jpeg"><div class="rev">i got multiple in redraws by refferals.</div></div>
+                <div class="gradient-div">  <img class="pro" src="3.jpeg"><div class="rev">it has a user friendly interface.<class="gradient-div" > </div></div>
+                <div class="gradient-div" >  <img class="pro" src="4.jpeg"><div class="rev">i love it i earn alot.</div></div>
+                <div class="gradient-div" > <img class="pro" src="5.jpeg"> <div class="rev">This is the best investment app.</div></div>
+            </div>
+        </div>
+
+        <!-- Bottom Taskbar -->
+        <div class="taskbar">
+            <button>Home</button>
+            <button onclick="window.location.href='recents.html'">Recents</button>
+            <button onclick="window.location.href='account.html'">Account</button>
+        </div>
+    </div>
+
+    <script>
+        // Simulate extended loading time and then show the main content
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                // Remove the splash screen element from the DOM
+                var loadingScreen = document.getElementById('loadingScreen');
+                loadingScreen.parentNode.removeChild(loadingScreen);
+                
+                // Display the main content
+                document.getElementById('contentSection').style.display = 'flex';
+            }, 5000); // 5 seconds delay for the loading screen
+        });
+    </script>
+</body>
+</html>
